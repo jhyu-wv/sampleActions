@@ -111,8 +111,7 @@ class GitHubIssueManager:
         """프로젝트 정보 가져오기 (GitHub Projects V2 API)"""
         try:
             # GraphQL API를 사용하여 프로젝트 정보 조회
-            project_name = os.getenv('RSS_PROJECT_NAME', 'sampleActions')
-            logger.warning(f"project_name ::: {project_name}")
+            project_name = os.getenv('RSS_PROJECT_NAME', 2)
             
             query = """
             query($owner: String!, $repo: String!) {
@@ -141,7 +140,6 @@ class GitHubIssueManager:
             
             owner, repo_name = self.repo.full_name.split('/')
             variables = {"owner": owner, "repo": repo_name}
-            logger.warning(f"variables ::: {variables}")
             
             response = self._execute_graphql_query(query, variables)
             
@@ -201,6 +199,9 @@ class GitHubIssueManager:
             headers=headers,
             json=data
         )
+
+        logger.warning(f"data   {data}")
+        logger.warning(f"response  {response}")
         
         if response.status_code == 200:
             return response.json()
