@@ -148,6 +148,7 @@ class GitHubIssueManager:
                 
                 # 프로젝트 이름으로 찾기 또는 첫 번째 프로젝트 사용
                 target_project = None
+                echo projects
                 for project in projects:
                     if project['title'] == project_name:
                         target_project = project
