@@ -176,7 +176,13 @@ class GitHubIssueManager:
                     }
             
             logger.warning("프로젝트 정보를 찾을 수 없습니다.")
-            return {}
+
+            return {
+                        'project_id': 2,
+                        'project_title': "Proj",
+                        'status_field_id': None,
+                        'status_options': {}
+                    }
             
         except Exception as e:
             logger.error(f"프로젝트 정보 조회 실패: {e}")
