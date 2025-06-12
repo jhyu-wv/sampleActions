@@ -63,6 +63,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TARGET_REPO: ${{ github.repository }}
           STATE_FILE_PATH: 'data/mantis_rss_state.json'
+          RSS_PROJECT_NAME: ${{ vars.RSS_PROJECT_NAME }}
+          DEFAULT_ISSUE_STATUS: ${{ vars.DEFAULT_ISSUE_STATUS }}
           
       # 5. 상태 파일 변경사항 커밋
       - name: Commit state changes
