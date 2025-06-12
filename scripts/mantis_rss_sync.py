@@ -84,8 +84,8 @@ class GitHubIssueManager:
     def _ensure_labels(self) -> Dict[str, any]:
         """필요한 라벨들이 존재하는지 확인하고 생성"""
         required_labels = {
-            'mantis-rss': {'color': '0969da', 'description': 'RSS 피드에서 자동 생성됨'},
-            'QA': {'color': '8b5a3c', 'description': 'QA 이슈'}
+            'mantis-rss': {'color': '599468', 'description': 'RSS 피드에서 자동 생성됨'},
+            'QA': {'color': 'efddff', 'description': 'QA 이슈'}
         }
         
         existing_labels = {label.name: label for label in self.repo.get_labels()}
