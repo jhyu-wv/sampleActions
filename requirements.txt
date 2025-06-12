@@ -1,0 +1,5 @@
+requests==2.31.0
+feedparser==6.0.10
+PyGithub==1.59.1
+python-dateutil==2.8.2
+pytz==2023.3
