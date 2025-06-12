@@ -112,6 +112,7 @@ class GitHubIssueManager:
         try:
             # GraphQL API를 사용하여 프로젝트 정보 조회
             project_name = os.getenv('RSS_PROJECT_NAME', 'sampleActions')
+            logger.warning(f"project_name ::: {project_name}")
             
             query = """
             query($owner: String!, $repo: String!) {
@@ -140,10 +141,10 @@ class GitHubIssueManager:
             
             owner, repo_name = self.repo.full_name.split('/')
             variables = {"owner": owner, "repo": repo_name}
+            logger.warning(f"variables ::: {variables}")
             
             response = self._execute_graphql_query(query, variables)
             
-            logger.warning(f"response ::: {response}") 
             if response and 'data' in response:
                 projects = response['data']['repository']['projectsV2']['nodes']
                 
