@@ -13,7 +13,7 @@ on:
   push:
     branches: [main]
     paths: 
-      - '.github/workflows/rss-sync.yml'
+      - '.github/workflows/mantis-rss-sync.yml'
       - 'scripts/**'
 
 # 환경 변수 설정
@@ -60,7 +60,7 @@ jobs:
           RSS_FEED_URL: ${{ vars.RSS_FEED_URL }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TARGET_REPO: ${{ github.repository }}
-          STATE_FILE_PATH: 'data/rss_state.json'
+          STATE_FILE_PATH: 'data/mantis_rss_state.json'
           
       # 5. 상태 파일 변경사항 커밋
       - name: Commit state changes
@@ -70,7 +70,7 @@ jobs:
           
           # 변경사항이 있는 경우에만 커밋
           if [[ -n $(git status --porcelain) ]]; then
-            git add data/rss_state.json
+            git add data/mantis_rss_state.json
             git commit -m "Update RSS sync state [skip ci]"
             git push
           else
@@ -105,7 +105,7 @@ jobs:
             const runs = await github.rest.actions.listWorkflowRuns({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              workflow_id: 'rss-sync.yml',
+              workflow_id: 'mantis-rss-sync.yml',
               per_page: 100
             });
             
