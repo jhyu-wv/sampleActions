@@ -21,6 +21,8 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   RSS_FEED_URL: ${{ vars.RSS_FEED_URL }}
   TARGET_REPO: ${{ github.repository }}
+  RSS_PROJECT_NAME: ${{ vars.RSS_PROJECT_NAME }}
+  DEFAULT_ISSUE_STATUS: ${{ vars.DEFAULT_ISSUE_STATUS }}
 
 jobs:
   sync-rss:
