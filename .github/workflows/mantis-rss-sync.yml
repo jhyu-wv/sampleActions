@@ -33,7 +33,7 @@ jobs:
       contents: write  # 상태 파일 커밋용
       issues: write    # 이슈 생성/수정용
       pull-requests: write
-      project: write  # ✅ 필수
+      statuses: write
       repository-projects: write  # 프로젝트 접근용
       
     steps:
