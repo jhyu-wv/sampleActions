@@ -54,7 +54,7 @@ jobs:
       # 4. RSS 동기화 스크립트 실행  
       - name: Run RSS sync
         run: |
-          python scripts/mantis-rss_sync.py
+          python scripts/mantis_rss_sync.py
         env:
           # 추가 환경 변수들
           RSS_FEED_URL: ${{ vars.RSS_FEED_URL }}
