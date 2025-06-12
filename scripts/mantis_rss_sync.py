@@ -84,7 +84,7 @@ class GitHubIssueManager:
     def _ensure_labels(self) -> Dict[str, any]:
         """필요한 라벨들이 존재하는지 확인하고 생성"""
         required_labels = {
-            'mantis-rss-sync': {'color': '0969da', 'description': 'RSS 피드에서 자동 생성됨'},
+            'mantis-rss': {'color': '0969da', 'description': 'RSS 피드에서 자동 생성됨'},
             'QA': {'color': '8b5a3c', 'description': 'QA 이슈'}
         }
         
@@ -221,7 +221,7 @@ class GitHubIssueManager:
         try:
             title = self._clean_title(rss_item.get('title', 'Untitled'))
             body = self._generate_issue_body(rss_item)
-            labels = [self.labels['rss-sync'], self.labels['mentis']]
+            labels = [self.labels['mantis-rss'], self.labels['QA']]
             
             # 기본 이슈 생성
             issue = self.repo.create_issue(
