@@ -111,7 +111,7 @@ class GitHubIssueManager:
         """프로젝트 정보 가져오기 (GitHub Projects V2 API)"""
         try:
             # GraphQL API를 사용하여 프로젝트 정보 조회
-            project_name = os.getenv('GITHUB_PROJECT_NAME', 'RSS Sync Board')
+            project_name = os.getenv('GITHUB_PROJECT_NAME', 'Proj')
             
             query = """
             query($owner: String!, $repo: String!) {
@@ -328,7 +328,7 @@ class GitHubIssueManager:
     def _determine_status(self, rss_item: Dict) -> str:
         """RSS 아이템 내용에 따른 상태 결정"""
         # 환경 변수에서 기본 상태 가져오기
-        default_status = os.getenv('DEFAULT_ISSUE_STATUS', 'To Do')
+        default_status = os.getenv('DEFAULT_ISSUE_STATUS', 'QA-issue')
         
         # RSS 아이템 내용 기반 상태 결정 로직
         title = rss_item.get('title', '').lower()
