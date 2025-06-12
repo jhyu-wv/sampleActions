@@ -32,6 +32,8 @@ jobs:
     permissions:
       contents: write  # 상태 파일 커밋용
       issues: write    # 이슈 생성/수정용
+      pull-requests: write
+      project: write  # ✅ 필수
       repository-projects: write  # 프로젝트 접근용
       
     steps:
@@ -65,6 +67,7 @@ jobs:
           TARGET_REPO: ${{ github.repository }}
           STATE_FILE_PATH: 'data/mantis_rss_state.json'
           RSS_PROJECT_NAME: ${{ vars.RSS_PROJECT_NAME }}
+          PROJECT_NUMBER: 2  # GitHub Project 번호
           DEFAULT_ISSUE_STATUS: ${{ vars.DEFAULT_ISSUE_STATUS }}
           
       # 5. 상태 파일 변경사항 커밋
