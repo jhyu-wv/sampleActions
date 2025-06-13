@@ -161,8 +161,13 @@ class GitHubIssueManager:
                     # Status 필드 찾기
                     status_field = None
                     status_options = {}
-                    logger.warning(f"  target_project ::: {target_project}")
+                    
                     for field in target_project['fields']['nodes']:
+
+                        # 빈 배열이면 CONTINUE
+                        if len(field): 
+                            continue
+
                         logger.warning(f"  field ::: {field}")
                         logger.warning(f"  field['name'] ::: {field['name'].lower()}")
 
