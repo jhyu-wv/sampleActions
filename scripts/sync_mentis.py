@@ -233,14 +233,17 @@ class GitHubProjectSync:
                 json={'query': query, 'variables': variables}
             )
             response.raise_for_status()
-            
+            print(f"프로젝트 필드 조회: {self.graphql_headers}")
+            print(f"프로젝트 필드 조회: {variables}")
+
             result = response.json()
             if 'errors' in result:
                 print(f"프로젝트 필드 조회 오류: {result['errors']}")
                 return False
             
             self.project_fields = result['data']['node']['fields']['nodes']
-            
+            print(f"프로젝트 필드 조회: {project_fields}")
+
             # Status 필드 찾기
             for field in self.project_fields:
                 if field['name'].lower() == 'status' and 'options' in field:
