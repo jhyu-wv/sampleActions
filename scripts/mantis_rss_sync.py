@@ -147,9 +147,6 @@ class GitHubIssueManager:
                 projects = response['data']['repository']['projectsV2']['nodes']
                 logger.warning(f" response::: {response}")
                 logger.warning(f" data::: {response['data']}")
-                logger.warning(f" repository::: {response['data']['repository']}")
-                logger.warning(f" projectsV2::: {response['data']['repository']['projectsV2']}")
-                logger.warning(f" projects::: {projects}")
                 
 
                 # 프로젝트 이름으로 찾기 또는 첫 번째 프로젝트 사용
@@ -190,6 +187,7 @@ class GitHubIssueManager:
     
     def _execute_graphql_query(self, query: str, variables: Dict) -> Optional[Dict]:
         """GraphQL 쿼리 실행"""
+        logger.warning(f"프로젝트 정보를 찾을 수 없습니다. {self.github_token}")
         headers = {
             'Authorization': f'Bearer {self.github_token}',
             'Content-Type': 'application/json',
