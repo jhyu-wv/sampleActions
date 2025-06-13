@@ -145,11 +145,16 @@ class GitHubIssueManager:
             
             if response and 'data' in response:
                 projects = response['data']['repository']['projectsV2']['nodes']
-                
-                # 프로젝트 이름으로 찾기 또는 첫 번째 프로젝트 사용
-                target_project = None
+                logger.warning(f" response::: {response}")
+                logger.warning(f" data::: {response['data']}")
+                logger.warning(f" repository::: {response['data']['repository']}")
+                logger.warning(f" projectsV2::: {response['data']['repository']['projectsV2']}")
                 logger.warning(f" projects::: {projects}")
                 
+
+                # 프로젝트 이름으로 찾기 또는 첫 번째 프로젝트 사용
+                target_project = None
+
                 for project in projects:
                     if project['id'] == project_name:
                         target_project = project
