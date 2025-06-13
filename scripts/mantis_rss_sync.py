@@ -187,9 +187,10 @@ class GitHubIssueManager:
             logger.error(f"프로젝트 정보 조회 실패: {e}")
             return {}
 
-    def get_milestone_id(self) -> Optional[str]:
+    def _get_milestone_id(self) -> Optional[str]:
         """TEST 마일스톤 ID 가져오기"""
         owner, repo_name = self.repo.full_name.split('/')
+        target_milestone = env.getenv('DEFAULT_MILESTONE', 'Logcatch - QA')
 
         url = f"https://api.github.com/repos/{owner}/{repo_name}/milestones"
         
@@ -199,7 +200,7 @@ class GitHubIssueManager:
             
             milestones = response.json()
             for milestone in milestones:
-                if milestone['title'] == self.milestone_name:
+                if milestone['title'] == target_milestone:
                     return str(milestone['number'])
             
             return None
@@ -300,8 +301,11 @@ class GitHubIssueManager:
             # 이슈의 Global ID 가져오기
             issue = self.repo.get_issue(issue_number)
             logger.warning(f"  issue::: {issue}")
-            issue_global_id = issue.id
-            
+            milestone_id = self._get_milestone_id(self)
+            logger.warning(f"  milestone_id::: {milestone_id}")
+            issue_global_id = self._get_issue_node_id(self, issue_number)
+            logger.warning(f"  issue_global_id::: {issue_global_id}")
+
             variables = {
                 "projectId": self.project_info['project_id'],
                 "contentId": issue_global_id
