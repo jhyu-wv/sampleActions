@@ -150,11 +150,6 @@ class GitHubIssueManager:
                 target_project = None
 
                 for project in projects:
-                    logger.warning(f" test Project ::: {project}")
-                    logger.warning(f" project['title'] ::: {project['title']}")
-                    logger.warning(f" project_name ::: {project_name}")
-                    logger.warning(f" project_name ::: {project['title'] == project_name}")
-
                     if project['title'] == project_name:
                         target_project = project
                         break
@@ -162,13 +157,15 @@ class GitHubIssueManager:
                 if not target_project and projects:
                     target_project = projects[0]  # 첫 번째 프로젝트 사용
 
-                logger.warning(f" target_project ::: {target_project}")
                 if target_project:
                     # Status 필드 찾기
                     status_field = None
                     status_options = {}
-                    
+                    logger.warning(f"  target_project ::: {target_project}")
                     for field in target_project['fields']['nodes']:
+                        logger.warning(f"  field ::: {field}")
+                        logger.warning(f"  field['name'] ::: {field['name'].lower()}")
+
                         if field['name'].lower() in ['status', '상태']:
                             status_field = field
                             logger.warning(f" status_field ::: {status_field}")
