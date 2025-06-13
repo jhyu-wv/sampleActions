@@ -22,7 +22,7 @@ env:
   GITHUB_TOKEN: ${{ secrets.MY_TOKEN }}
   TARGET_REPO: ${{ github.repository }}
   STATE_FILE_PATH: 'data/mantis_rss_state.json'
-  RSS_PROJECT_NAME: ${{ vars.PROJECT_ID }}
+  RSS_PROJECT_NAME: ${{ vars.PROJECT_NAME }}
   DEFAULT_ISSUE_STATUS: ${{ vars.PROJECT_DEFAULT_STATUS }}
 
 jobs:
@@ -62,7 +62,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.MY_TOKEN }}
           TARGET_REPO: ${{ github.repository }}
           STATE_FILE_PATH: 'data/mantis_rss_state.json'
-          RSS_PROJECT_NAME: ${{ vars.PROJECT_ID }}
+          RSS_PROJECT_NAME: ${{ vars.PROJECT_NAME }}
           DEFAULT_ISSUE_STATUS: ${{ vars.PROJECT_DEFAULT_STATUS }}
           
       # 5. 상태 파일 변경사항 커밋

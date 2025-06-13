@@ -114,7 +114,7 @@ class GitHubIssueManager:
         
         try:
             # GraphQL API를 사용하여 프로젝트 정보 조회
-            project_name = os.getenv('RSS_PROJECT_NAME', '2')
+            project_name = os.getenv('RSS_PROJECT_NAME', 'Proj')
             
             query = """
             query($owner: String!, $repo: String!) {
