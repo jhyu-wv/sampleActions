@@ -109,6 +109,9 @@ class GitHubIssueManager:
     
     def _get_project_info(self) -> Dict:
         """프로젝트 정보 가져오기 (GitHub Projects V2 API)"""
+
+        logger.warning(f" response::: {self.github_token}")
+        
         try:
             # GraphQL API를 사용하여 프로젝트 정보 조회
             project_name = os.getenv('RSS_PROJECT_NAME', '2')
@@ -143,11 +146,11 @@ class GitHubIssueManager:
             
             response = self._execute_graphql_query(query, variables)
             
+            logger.warning(f" response::: {response}")
+            logger.warning(f" data::: {response['data']}")
+
             if response and 'data' in response:
-                projects = response['data']['repository']['projectsV2']['nodes']
-                logger.warning(f" response::: {response}")
-                logger.warning(f" data::: {response['data']}")
-                
+                projects = response['data']['repository']['projectsV2']['nodes']                   
 
                 # 프로젝트 이름으로 찾기 또는 첫 번째 프로젝트 사용
                 target_project = None
@@ -187,7 +190,8 @@ class GitHubIssueManager:
     
     def _execute_graphql_query(self, query: str, variables: Dict) -> Optional[Dict]:
         """GraphQL 쿼리 실행"""
-        logger.warning(f"프로젝트 정보를 찾을 수 없습니다. {self.github_token}")
+        logger.warning(f"프로젝트 정보 조회 {self.github_token}")
+
         headers = {
             'Authorization': f'Bearer {self.github_token}',
             'Content-Type': 'application/json',

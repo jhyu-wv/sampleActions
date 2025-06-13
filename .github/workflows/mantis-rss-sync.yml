@@ -19,7 +19,7 @@ on:
 # 환경 변수 설정
 env:
   RSS_FEED_URL: ${{ vars.MENTIS_RSS_URL }}
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  GITHUB_TOKEN: ${{ secrets.MY_TOKEN }}
   TARGET_REPO: ${{ github.repository }}
   STATE_FILE_PATH: 'data/mantis_rss_state.json'
   RSS_PROJECT_NAME: ${{ vars.PROJECT_ID }}
