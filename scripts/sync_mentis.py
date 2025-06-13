@@ -267,7 +267,6 @@ class GitHubProjectSync:
             return False
 
     def add_issue_to_project(self, issue_number: int) -> bool:
-    def add_issue_to_project(self, issue_number: int) -> bool:
         """이슈를 Project V2에 추가하고 상태를 설정합니다."""
         try:
             # 프로젝트 필드 정보가 없으면 가져오기
