@@ -226,6 +226,7 @@ class GitHubIssueManager:
             )
             
             logger.info(f"이슈 생성: #{issue.number} - {title}")
+            logger.info(f"생성된 이슈 상세: #{issue}")
             
             # 프로젝트에 이슈 추가 및 상태 설정
             if self.project_info:
@@ -261,7 +262,7 @@ class GitHubIssueManager:
             # 이슈의 Global ID 가져오기
             issue = self.repo.get_issue(issue_number)
             logger.warning(f"  issue::: {issue}")
-            issue_global_id = issue.number
+            issue_global_id = issue.id
             
             variables = {
                 "projectId": self.project_info['project_id'],
