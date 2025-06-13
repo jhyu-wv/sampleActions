@@ -22,7 +22,7 @@ jobs:
       issues: write    # 이슈 생성/수정용
       contents: write  # 상태 파일 커밋용
       repository-projects: write  # 프로젝트 접근용
-      metadata: read
+      actions: read
       statuses: write
     
     steps:
