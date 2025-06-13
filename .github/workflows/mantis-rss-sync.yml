@@ -43,7 +43,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           # 상태 파일 커밋을 위해 토큰 사용
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.MY_TOKEN }}
           
       # 2. Python 환경 설정
       - name: Set up Python
@@ -64,7 +64,7 @@ jobs:
         env:
           # 추가 환경 변수들
           RSS_FEED_URL: ${{ vars.MENTIS_RSS_URL }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.MY_TOKEN }}
           TARGET_REPO: ${{ github.repository }}
           STATE_FILE_PATH: 'data/mantis_rss_state.json'
           RSS_PROJECT_NAME: ${{ vars.PROJECT_ID }}
