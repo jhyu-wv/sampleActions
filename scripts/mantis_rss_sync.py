@@ -308,9 +308,9 @@ class GitHubIssueManager:
             # 이슈의 Global ID 가져오기
             issue = self.repo.get_issue(issue_number)
             logger.warning(f"  issue::: {issue}")
-            milestone_id = self._get_milestone_id(self)
+            milestone_id = self._get_milestone_id()
             logger.warning(f"  milestone_id::: {milestone_id}")
-            issue_global_id = self._get_issue_node_id(self, issue_number)
+            issue_global_id = self._get_issue_node_id(issue_number)
             logger.warning(f"  issue_global_id::: {issue_global_id}")
 
             variables = {
