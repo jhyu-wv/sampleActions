@@ -156,7 +156,7 @@ class GitHubIssueManager:
                 target_project = None
 
                 for project in projects:
-                    if project['id'] == project_name:
+                    if project['name'] == project_name:
                         target_project = project
                         break
                 
