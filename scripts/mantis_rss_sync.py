@@ -206,7 +206,6 @@ class GitHubIssueManager:
 
         logger.warning(f"data   {data}")
         logger.warning(f"headers  {headers}")
-        logger.warning(f"response  {response}")
         
         if response.status_code == 200:
             return response.json()
