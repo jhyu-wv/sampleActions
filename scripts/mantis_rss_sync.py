@@ -226,7 +226,7 @@ class GitHubIssueManager:
             )
             
             logger.info(f"이슈 생성: #{issue.number} - {title}")
-            logger.info(f"생성된 이슈 상세: #{issue}")
+            logger.info(f"생성된 이슈 상세: #{issue}") 
             logger.info(f"rss_item 상세: #{rss_item}")
             
             # 프로젝트에 이슈 추가 및 상태 설정
