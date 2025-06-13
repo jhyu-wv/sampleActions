@@ -166,6 +166,8 @@ class GitHubIssueManager:
                     for field in target_project['fields']['nodes']:
                         if field['name'].lower() in ['status', '상태']:
                             status_field = field
+                            logger.warning(f" status_field ::: {status_field}")
+                            logger.warning(f" field ::: {field['options']}")
                             status_options = {opt['name']: opt['id'] for opt in field['options']}
                             break
                     
