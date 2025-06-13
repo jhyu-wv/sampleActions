@@ -16,15 +16,6 @@ on:
       - '.github/workflows/mantis-rss-sync.yml'
       - 'scripts/**'
 
-# 환경 변수 설정
-env:
-  RSS_FEED_URL: ${{ vars.MENTIS_RSS_URL }}
-  GITHUB_TOKEN: ${{ secrets.MY_TOKEN }}
-  TARGET_REPO: ${{ github.repository }}
-  STATE_FILE_PATH: 'data/mantis_rss_state.json'
-  RSS_PROJECT_NAME: ${{ vars.PROJECT_NAME }}
-  DEFAULT_ISSUE_STATUS: ${{ vars.PROJECT_DEFAULT_STATUS }}
-
 jobs:
   sync-rss:
     runs-on: ubuntu-latest
@@ -57,11 +48,12 @@ jobs:
         run: |
           python scripts/mantis_rss_sync.py
         env:
-          # 추가 환경 변수들
+          # 환경 변수들
           RSS_FEED_URL: ${{ vars.MENTIS_RSS_URL }}
           GITHUB_TOKEN: ${{ secrets.MY_TOKEN }}
           TARGET_REPO: ${{ github.repository }}
           STATE_FILE_PATH: 'data/mantis_rss_state.json'
+          DEFAULT_MILESTONE: ${{ vars.DEFAULT_MILESTONE }}
           RSS_PROJECT_NAME: ${{ vars.PROJECT_NAME }}
           DEFAULT_ISSUE_STATUS: ${{ vars.PROJECT_DEFAULT_STATUS }}
           
