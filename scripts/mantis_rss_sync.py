@@ -261,7 +261,7 @@ class GitHubIssueManager:
             # 이슈의 Global ID 가져오기
             issue = self.repo.get_issue(issue_number)
             logger.warning(f"  issue::: {issue}")
-            issue_global_id = issue.node_id
+            issue_global_id = issue.number
             
             variables = {
                 "projectId": self.project_info['project_id'],
