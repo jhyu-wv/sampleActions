@@ -166,9 +166,6 @@ class GitHubIssueManager:
                         if field == {}:
                             continue
 
-                        logger.warning(f"  field ::: {field}")
-                        logger.warning(f"  field['name'] ::: {field['name'].lower()}")
-
                         if field['name'].lower() in ['status', '상태']:
                             status_field = field
                             logger.warning(f" status_field ::: {status_field}")
