@@ -111,7 +111,7 @@ class GitHubIssueManager:
         """프로젝트 정보 가져오기 (GitHub Projects V2 API)"""
         try:
             # GraphQL API를 사용하여 프로젝트 정보 조회
-            project_name = os.getenv('RSS_PROJECT_NAME', 2)
+            project_name = os.getenv('RSS_PROJECT_NAME', '2')
             
             query = """
             query($owner: String!, $repo: String!) {
@@ -148,9 +148,10 @@ class GitHubIssueManager:
                 
                 # 프로젝트 이름으로 찾기 또는 첫 번째 프로젝트 사용
                 target_project = None
-
+                logger.warning(f" projects::: {projects}")
+                
                 for project in projects:
-                    if project['title'] == project_name:
+                    if project['id'] == project_name:
                         target_project = project
                         break
                 
@@ -176,13 +177,7 @@ class GitHubIssueManager:
                     }
             
             logger.warning("프로젝트 정보를 찾을 수 없습니다.")
-
-            return {
-                        'project_id': 2,
-                        'project_title': "Proj",
-                        'status_field_id': None,
-                        'status_options': {}
-                    }
+            return {}
             
         except Exception as e:
             logger.error(f"프로젝트 정보 조회 실패: {e}")

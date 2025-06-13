@@ -18,11 +18,12 @@ on:
 
 # 환경 변수 설정
 env:
+  RSS_FEED_URL: ${{ vars.MENTIS_RSS_URL }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  RSS_FEED_URL: ${{ vars.RSS_FEED_URL }}
   TARGET_REPO: ${{ github.repository }}
-  RSS_PROJECT_NAME: ${{ vars.RSS_PROJECT_NAME }}
-  DEFAULT_ISSUE_STATUS: ${{ vars.DEFAULT_ISSUE_STATUS }}
+  STATE_FILE_PATH: 'data/mantis_rss_state.json'
+  RSS_PROJECT_NAME: ${{ vars.PROJECT_ID }}
+  DEFAULT_ISSUE_STATUS: ${{ vars.PROJECT_DEFAULT_STATUS }}
 
 jobs:
   sync-rss:
@@ -32,7 +33,7 @@ jobs:
     permissions:
       contents: write  # 상태 파일 커밋용
       issues: write    # 이슈 생성/수정용
-      pull-requests: write
+      actions: write
       statuses: write
       repository-projects: write  # 프로젝트 접근용
       
@@ -62,12 +63,12 @@ jobs:
           python scripts/mantis_rss_sync.py
         env:
           # 추가 환경 변수들
-          RSS_FEED_URL: ${{ vars.RSS_FEED_URL }}
+          RSS_FEED_URL: ${{ vars.MENTIS_RSS_URL }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TARGET_REPO: ${{ github.repository }}
           STATE_FILE_PATH: 'data/mantis_rss_state.json'
-          RSS_PROJECT_NAME: ${{ vars.RSS_PROJECT_NAME }}
-          DEFAULT_ISSUE_STATUS: ${{ vars.DEFAULT_ISSUE_STATUS }}
+          RSS_PROJECT_NAME: ${{ vars.PROJECT_ID }}
+          DEFAULT_ISSUE_STATUS: ${{ vars.PROJECT_DEFAULT_STATUS }}
           
       # 5. 상태 파일 변경사항 커밋
       - name: Commit state changes
