@@ -108,10 +108,7 @@ class GitHubIssueManager:
         return labels
     
     def _get_project_info(self) -> Dict:
-        """프로젝트 정보 가져오기 (GitHub Projects V2 API)"""
-
-        logger.warning(f" response::: {self.github_token}")
-        
+        """프로젝트 정보 가져오기 (GitHub Projects V2 API)"""       
         try:
             # GraphQL API를 사용하여 프로젝트 정보 조회
             project_name = os.getenv('RSS_PROJECT_NAME', 'Proj')
@@ -146,9 +143,6 @@ class GitHubIssueManager:
             
             response = self._execute_graphql_query(query, variables)
             
-            logger.warning(f" response::: {response}")
-            logger.warning(f" data::: {response['data']}")
-
             if response and 'data' in response:
                 projects = response['data']['repository']['projectsV2']['nodes']                   
 
@@ -156,13 +150,14 @@ class GitHubIssueManager:
                 target_project = None
 
                 for project in projects:
+                    logger.warning(f" test Project ::: {project}")
                     if project['title'] == project_name:
                         target_project = project
                         break
                 
                 if not target_project and projects:
                     target_project = projects[0]  # 첫 번째 프로젝트 사용
-                
+
                 if target_project:
                     # Status 필드 찾기
                     status_field = None
@@ -190,8 +185,6 @@ class GitHubIssueManager:
     
     def _execute_graphql_query(self, query: str, variables: Dict) -> Optional[Dict]:
         """GraphQL 쿼리 실행"""
-        logger.warning(f"프로젝트 정보 조회 {self.github_token}")
-
         headers = {
             'Authorization': f'Bearer {self.github_token}',
             'Content-Type': 'application/json',
@@ -207,9 +200,6 @@ class GitHubIssueManager:
             headers=headers,
             json=data
         )
-
-        logger.warning(f"data   {data}")
-        logger.warning(f"headers  {headers}")
         
         if response.status_code == 200:
             return response.json()
