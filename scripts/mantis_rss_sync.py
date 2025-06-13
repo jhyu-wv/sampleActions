@@ -190,7 +190,7 @@ class GitHubIssueManager:
     def _get_milestone_id(self) -> Optional[str]:
         """TEST 마일스톤 ID 가져오기"""
         owner, repo_name = self.repo.full_name.split('/')
-        target_milestone = env.getenv('DEFAULT_MILESTONE', 'Logcatch - QA')
+        target_milestone = os.getenv('DEFAULT_MILESTONE', 'Logcatch - QA')
 
         url = f"https://api.github.com/repos/{owner}/{repo_name}/milestones"
         
