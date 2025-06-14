@@ -19,7 +19,8 @@ class GitHubProjectSync:
         self.token = os.environ['GITHUB_TOKEN']
         self.repository = os.environ['REPOSITORY']
         self.rss_url = os.environ['RSS_URL']
-        self.project_id = os.environ['PROJECT_ID']
+        self.project_number = os.environ.get('PROJECT_NUMBER')  # 프로젝트 번호
+        self.project_id = os.environ.get('PROJECT_ID')  # GraphQL Node ID
         self.default_status = os.environ['DEFAULT_STATUS']
         self.default_milestone = os.environ['DEFAULT_MILESTONE']
         
@@ -30,6 +31,76 @@ class GitHubProjectSync:
         }
         self.graphql_url = 'https://api.github.com/graphql'
         self.rest_api_url = 'https://api.github.com/repos'
+        
+        # PROJECT_ID가 없으면 PROJECT_NUMBER로부터 가져오기
+        if not self.project_id and self.project_number:
+            self.project_id = self.get_project_id_from_number()
+    
+    def get_project_id_from_number(self) -> Optional[str]:
+        """프로젝트 번호로부터 GraphQL Node ID 가져오기"""
+        try:
+            # 사용자/조직의 프로젝트인지 확인
+            owner = self.repository.split('/')[0]
+            
+            # 먼저 사용자 프로젝트로 시도
+            query = """
+            query($login: String!, $number: Int!) {
+                user(login: $login) {
+                    projectV2(number: $number) {
+                        id
+                    }
+                }
+            }
+            """
+            
+            variables = {
+                'login': owner,
+                'number': int(self.project_number)
+            }
+            
+            response = requests.post(
+                self.graphql_url,
+                headers=self.headers,
+                json={'query': query, 'variables': variables}
+            )
+            response.raise_for_status()
+            
+            result = response.json()
+            if result.get('data', {}).get('user', {}).get('projectV2'):
+                project_id = result['data']['user']['projectV2']['id']
+                print(f"사용자 프로젝트 ID 조회: {project_id}")
+                return project_id
+            
+            # 조직 프로젝트로 시도
+            query = """
+            query($login: String!, $number: Int!) {
+                organization(login: $login) {
+                    projectV2(number: $number) {
+                        id
+                    }
+                }
+            }
+            """
+            
+            response = requests.post(
+                self.graphql_url,
+                headers=self.headers,
+                json={'query': query, 'variables': variables}
+            )
+            response.raise_for_status()
+            
+            result = response.json()
+            if result.get('data', {}).get('organization', {}).get('projectV2'):
+                project_id = result['data']['organization']['projectV2']['id']
+                print(f"조직 프로젝트 ID 조회: {project_id}")
+                return project_id
+                
+            print("프로젝트를 찾을 수 없습니다.")
+            return None
+            
+        except Exception as e:
+            print(f"프로젝트 ID 조회 실패: {e}")
+            return None
         
     def fetch_rss_items(self) -> List[Dict]:
         """RSS 피드에서 아이템 가져오기"""
@@ -177,21 +248,7 @@ class GitHubProjectSync:
             
             issue_node_id = response.json()['node_id']
             
-            # 프로젝트에 이슈 추가 (새로운 mutation 사용)
-            mutation = """
-            mutation($projectId: ID!, $contentId: ID!) {
-                addProjectV2DraftIssue(input: {
-                    projectId: $projectId
-                    title: "temp"
-                }) {
-                    projectItem {
-                        id
-                    }
-                }
-            }
-            """
-            
-            # 대신 직접 아이템 추가 시도
+            # 프로젝트에 이슈 추가
             mutation = """
             mutation($projectId: ID!, $contentId: ID!) {
                 addProjectV2Item(input: {
