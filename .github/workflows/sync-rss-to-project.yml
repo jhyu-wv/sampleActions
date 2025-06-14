@@ -10,7 +10,7 @@ env:
   RSS_URL: ${{ vars.MENTIS_RSS_URL }}
   PROJECT_NUMBER: ${{ vars.PROJECT_NUMBER }}  # 프로젝트 번호 (URL에서 보이는 숫자)
   PROJECT_ID: ${{ vars.PROJECT_ID }}  # GraphQL Node ID (선택사항)
-  DEFAULT_STATUS: ${{ vars.PROJECT_DEFAULT_STATUS }}
+  DEFAULT_STATUS: ${{ vars.DEFAULT_STATUS }}
   DEFAULT_MILESTONE: ${{ vars.DEFAULT_MILESTONE }}
 
 jobs:
