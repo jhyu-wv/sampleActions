@@ -18,7 +18,7 @@ class GitHubProjectSync:
     def __init__(self):
         self.token = os.environ['GITHUB_TOKEN']
         self.repository = os.environ['REPOSITORY']
-        self.rss_url = os.environ['RSS_URL']
+        self.rss_url = os.environ['MENTIS_RSS_URL']
         self.project_number = os.environ.get('PROJECT_NUMBER')  # 프로젝트 번호
         self.project_id = os.environ.get('PROJECT_ID')  # GraphQL Node ID
         self.default_status = os.environ['DEFAULT_STATUS']
