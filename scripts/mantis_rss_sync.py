@@ -321,6 +321,7 @@ class GitHubIssueManager:
             }
             
             response = self._execute_graphql_query(add_mutation, variables)
+            logger.warning(f"  response::: {response}")
             
             if response and 'data' in response:
                 item_id = response['data']['addProjectV2ItemByContentId']['item']['id']
