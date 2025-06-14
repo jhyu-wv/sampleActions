@@ -7,7 +7,7 @@ on:
   workflow_dispatch: # 수동 실행 가능
 
 env:
-  MENTIS_RSS_URL: ${{ vars.MENTIS_RSS_URL }}
+  RSS_URL: ${{ vars.MANTIS_RSS_URL }}
   PROJECT_NUMBER: ${{ vars.PROJECT_NUMBER }}  # 프로젝트 번호 (URL에서 보이는 숫자)
   PROJECT_ID: ${{ vars.PROJECT_ID }}  # GraphQL Node ID (선택사항)
   DEFAULT_STATUS: ${{ vars.DEFAULT_STATUS }}
