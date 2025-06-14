@@ -48,7 +48,7 @@ jobs:
         run: |
           python scripts/mantis_rss_sync.py
         env:
-          # 환경 변수들
+          # 환경 변수들 
           RSS_FEED_URL: ${{ vars.MANTIS_RSS_URL }}
           GITHUB_TOKEN: ${{ secrets.MY_TOKEN }}
           TARGET_REPO: ${{ github.repository }}
