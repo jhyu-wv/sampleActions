@@ -1,38 +1,50 @@
-name: Sync RSS to Project Board
+name: RSS to GitHub Projects Sync
 
 on:
   schedule:
-    # 매 시간마다 실행 (필요에 따라 조정)
+    # 매 시간마다 실행 (UTC 기준)
     - cron: '0 * * * *'
-  workflow_dispatch: # 수동 실행 가능
+  workflow_dispatch:  # 수동 실행 허용
 
 env:
-  RSS_URL: ${{ vars.MANTIS_RSS_URL }}
-  PROJECT_NUMBER: ${{ vars.PROJECT_NUMBER }}  # 프로젝트 번호 (URL에서 보이는 숫자)
-  PROJECT_ID: ${{ vars.PROJECT_ID }}  # GraphQL Node ID (선택사항)
-  DEFAULT_STATUS: ${{ vars.DEFAULT_STATUS }}
-  DEFAULT_MILESTONE: ${{ vars.DEFAULT_MILESTONE }}
+  # 필수 환경변수들
+  GITHUB_TOKEN: ${{ secrets.MY_TOKEN }}
+  PROJECT_NUMBER: ${{ vars.PROJECT_NUMBER }}
+  MANTIS_RSS_URL: ${{ vars.MANTIS_RSS_URL }}
+  
+  # 선택적 환경변수들 (기본값 제공)
+  DEFAULT_STATUS: ${{ vars.DEFAULT_STATUS || 'Todo' }}
+  DEFAULT_MILESTONE: ${{ vars.DEFAULT_MILESTONE || '' }}
+  STATUS_FIELD_NAME: ${{ vars.STATUS_FIELD_NAME || 'Status' }}
+  MILESTONE_FIELD_NAME: ${{ vars.MILESTONE_FIELD_NAME || 'Milestone' }}
 
 jobs:
   sync-rss:
     runs-on: ubuntu-latest
+    
     permissions: write-all
     
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
         
-      - name: Setup Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
-          
-      - name: Install dependencies
-        run: |
-          pip install requests feedparser python-dateutil
-          
-      - name: Run RSS sync script
-        run: python .github/scripts/sync_rss_to_project.py
-        env:
-          GITHUB_TOKEN: ${{ secrets.MY_TOKEN }}
-          REPOSITORY: ${{ github.repository }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install feedparser requests
+        
+    - name: Run RSS sync script
+      run: python .gitHub/scripts/rss_sync.py
+      
+    - name: Upload logs (on failure)
+      if: failure()
+      uses: actions/upload-artifact@v3
+      with:
+        name: sync-logs
+        path: '*.log'
+        retention-days: 7
