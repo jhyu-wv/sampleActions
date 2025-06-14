@@ -246,16 +246,24 @@ class GitHubIssueManager:
             'variables': variables
         }
         
-        response = requests.post(
-            'https://api.github.com/graphql',
-            headers=headers,
-            json=data
-        )
-        
-        if response.status_code == 200:
-            return response.json()
-        else:
-            logger.error(f"GraphQL 쿼리 실패: {response.status_code} - {response.text}")
+        try:
+            response = requests.post(
+                'https://api.github.com/graphql',
+                headers=headers,
+                json=data,
+                timeout=15
+            )
+            if response.status_code == 200:
+                result = response.json()
+                if 'errors' in result:
+                    logger.error(f"GraphQL 오류: {result['errors']}")
+                    return None
+                return result
+            else:
+                logger.error(f"GraphQL 쿼리 실패: {response.status_code} - {response.text}")
+                return None
+        except Exception as e:
+            logger.error(f"GraphQL 요청 예외: {e}")
             return None
     
     def create_issue_from_rss(self, rss_item: Dict) -> Optional[int]:
@@ -323,7 +331,10 @@ class GitHubIssueManager:
                 "projectId": self.project_info['project_id'],
                 "contentId": issue_global_id
             }
-            
+
+            logger.warning(f"  variables::: {variables}")
+            logger.warning(f"  add_mutation::: {add_mutation}")
+
             response = self._execute_graphql_query(add_mutation, variables)
             logger.warning(f"  response::: {response}")
 
