@@ -303,6 +303,8 @@ class GitHubIssueManager:
                 }
               }
             }
+            """
+            logger.warning(f"프로젝트에 이슈 추가: #{issue_number}")
             
             # 이슈의 Global ID 가져오기
             issue = self.repo.get_issue(issue_number)
@@ -327,14 +329,15 @@ class GitHubIssueManager:
                 logger.info(f"이슈 #{issue_number}를 프로젝트에 추가했습니다.")
                 
                 # 2. 상태 설정
-                self._set_issue_status(item_id, rss_item)
+                self._set_issue_status(item_id, issue_number, rss_item)
             else:
                 logger.error("프로젝트에 이슈 추가 실패")
 
         except Exception as e:
             logger.error(f"프로젝트 추가 중 오류: {e}")
     
-    def _set_issue_status(self, item_id: str, rss_item: Dict):
+            
+    def _set_issue_status(self, item_id: str, issue_number: int, rss_item: Dict):
         """이슈 상태 설정"""
         try:
             milestone_id = self._get_milestone_id()
