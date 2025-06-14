@@ -297,6 +297,7 @@ class GitHubIssueManager:
               addProjectV2ItemByContentId(input: {
                 projectId: $projectId
                 contentId: $contentId
+                fieldId: $fieldId
               }) {
                 item {
                   id
@@ -315,7 +316,8 @@ class GitHubIssueManager:
 
             variables = {
                 "projectId": self.project_info['project_id'],
-                "contentId": issue_global_id
+                "contentId": issue_global_id,
+                "fieldId": milestone_id
             }
             
             response = self._execute_graphql_query(add_mutation, variables)
