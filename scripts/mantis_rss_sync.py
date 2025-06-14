@@ -309,8 +309,8 @@ class GitHubIssueManager:
                 contentId: $contentId
               }) {
                 item {
-                  id
-                }
+                    id
+                    content
               }
             }
             """
