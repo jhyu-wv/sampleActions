@@ -16,10 +16,7 @@ env:
 jobs:
   sync-rss:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      issues: write
-      projects: write
+    permissions: write-all
     
     steps:
       - name: Checkout repository
