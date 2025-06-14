@@ -255,6 +255,8 @@ class GitHubIssueManager:
             )
             if response.status_code == 200:
                 result = response.json()
+                logger.info(f"GraphQL 수행 내역: {result}")
+
                 if 'errors' in result:
                     logger.error(f"GraphQL 오류: {result['errors']}")
                     return None
