@@ -99,7 +99,7 @@ class GitHubProjectSync:
             data = {
                 'title': item['title'],
                 'body': body,
-                'labels': ['rss-sync']
+                'labels': ['mantis-rss', 'QA']
             }
             
             response = requests.post(url, headers=self.headers, json=data)
