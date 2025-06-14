@@ -297,32 +297,31 @@ class GitHubIssueManager:
               addProjectV2ItemByContentId(input: {
                 projectId: $projectId
                 contentId: $contentId
-                fieldId: $fieldId
               }) {
                 item {
                   id
                 }
               }
             }
-            """
             
             # 이슈의 Global ID 가져오기
             issue = self.repo.get_issue(issue_number)
             logger.warning(f"  issue::: {issue}")
-            milestone_id = self._get_milestone_id()
-            logger.warning(f"  milestone_id::: {milestone_id}")
+
+            project_id = self.project_info['project_id']
+            logger.warning(f"  project_id::: {project_id}")
+
             issue_global_id = self._get_issue_node_id(issue_number)
             logger.warning(f"  issue_global_id::: {issue_global_id}")
 
             variables = {
                 "projectId": self.project_info['project_id'],
-                "contentId": issue_global_id,
-                "fieldId": milestone_id
+                "contentId": issue_global_id
             }
             
             response = self._execute_graphql_query(add_mutation, variables)
             logger.warning(f"  response::: {response}")
-            
+
             if response and 'data' in response:
                 item_id = response['data']['addProjectV2ItemByContentId']['item']['id']
                 logger.info(f"이슈 #{issue_number}를 프로젝트에 추가했습니다.")
@@ -331,13 +330,19 @@ class GitHubIssueManager:
                 self._set_issue_status(item_id, rss_item)
             else:
                 logger.error("프로젝트에 이슈 추가 실패")
-                
+
         except Exception as e:
             logger.error(f"프로젝트 추가 중 오류: {e}")
     
     def _set_issue_status(self, item_id: str, rss_item: Dict):
         """이슈 상태 설정"""
         try:
+            milestone_id = self._get_milestone_id()
+            logger.warning(f"  milestone_id::: {milestone_id}")
+
+            issue_global_id = self._get_issue_node_id(issue_number)
+            logger.warning(f"  issue_global_id::: {issue_global_id}")
+
             if not self.project_info.get('status_field_id'):
                 logger.warning("상태 필드가 없어 상태 설정을 건너뜁니다.")
                 return
@@ -352,15 +357,19 @@ class GitHubIssueManager:
             
             # 상태 업데이트 mutation
             update_mutation = """
-            mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $value: ProjectV2FieldValue!) {
+            mutation($projectId: ID!, $itemId: ID!, $milestoneId: ID!, $value: ProjectV2FieldValue!) {
               updateProjectV2ItemFieldValue(input: {
                 projectId: $projectId
                 itemId: $itemId
-                fieldId: $fieldId
+                milestoneId: $milestoneId
                 value: $value
               }) {
-                projectV2Item {
-                  id
+                issue {
+                    id
+                    milestone {
+                        id
+                        title
+                    }
                 }
               }
             }
@@ -369,7 +378,7 @@ class GitHubIssueManager:
             variables = {
                 "projectId": self.project_info['project_id'],
                 "itemId": item_id,
-                "fieldId": self.project_info['status_field_id'],
+                "milestoneId": milestone_id,
                 "value": {
                     "singleSelectOptionId": status_option_id
                 }
