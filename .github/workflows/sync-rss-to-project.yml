@@ -1,0 +1,41 @@
+name: Sync RSS to Project Board
+
+on:
+  schedule:
+    # 매 시간마다 실행 (필요에 따라 조정)
+    - cron: '0 * * * *'
+  workflow_dispatch: # 수동 실행 가능
+
+env:
+  RSS_URL: ${{ vars.MENTIS_RSS_URL }}
+  PROJECT_NUMBER: ${{ vars.PROJECT_NUMBER }}  # 프로젝트 번호 (URL에서 보이는 숫자)
+  PROJECT_ID: ${{ vars.PROJECT_ID }}  # GraphQL Node ID (선택사항)
+  DEFAULT_STATUS: ${{ vars.PROJECT_DEFAULT_STATUS }}
+  DEFAULT_MILESTONE: ${{ vars.DEFAULT_MILESTONE }}
+
+jobs:
+  sync-rss:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      projects: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          
+      - name: Install dependencies
+        run: |
+          pip install requests feedparser python-dateutil
+          
+      - name: Run RSS sync script
+        run: python .github/scripts/sync_rss_to_project.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.MY_TOKEN }}
+          REPOSITORY: ${{ github.repository }}
