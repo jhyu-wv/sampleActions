@@ -226,6 +226,8 @@ class GitHubIssueManager:
             response.raise_for_status()
             
             issue = response.json()
+            logger.warning(f" GET issue node::: {issue}")
+
             return issue.get('node_id')
             
         except Exception as e:
@@ -304,6 +306,7 @@ class GitHubIssueManager:
               }
             }
             """
+
             logger.warning(f"프로젝트에 이슈 추가: #{issue_number}")
             
             # 이슈의 Global ID 가져오기
